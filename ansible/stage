@@ -1,0 +1,8 @@
+[stage]
+33.33.30.10
+
+[webservers:children]
+stage
+
+[dbservers:children]
+stage

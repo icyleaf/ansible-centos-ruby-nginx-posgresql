@@ -1,0 +1,68 @@
+---
+# Postgresql
+- name: Install Postgresql repo
+  yum: name=http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-redhat93-9.3-1.noarch.rpm state=present
+
+- name: Update repo
+  yum: name=* state=latest
+
+- name: Install postgresql packages
+  yum: name={{ item }} state=present
+  with_items:
+    - postgresql93
+    - postgresql93-server
+    - postgresql93-contrib
+    - postgresql93-devel
+    - postgresql93-libs
+    - python-psycopg2
+
+- name: Init db
+  shell: service postgresql-9.3 initdb
+
+- name: Starting service
+  service: name=postgresql-9.3
+           state=started
+
+- name: Updating runlevel
+  shell: chkconfig --level 234 postgresql-9.3 on
+
+- name: Listen all address
+  lineinfile: dest=/var/lib/pgsql/9.3/data/postgresql.conf
+              regexp='^#?listen_addresses\s*='
+              line="listen_addresses = '*'"
+              state=present
+
+- name: Allow remote user access db
+  lineinfile: dest=/var/lib/pgsql/9.3/data/pg_hba.conf
+              line='host all all 33.33.33.1/32 md5'
+              insertafter=EOF
+  notify:
+    - restart postgresql
+
+# - name: Empty postgres user password
+#   sudo_user: root
+#   command: echo "" | password --stdin postgres
+
+- name: Create a db
+  # sudo_user: postgres
+  sudo_user: root
+  postgresql_db: db={{ pg_db_name }}
+
+- name: Create postgresql user
+  sudo_user: root
+  postgresql_user: name={{ user }}
+                   password={{ user }}
+                   db={{ pg_db_name }}
+                   priv=ALL
+
+- name: Update user roles
+  # sudo_user: postgres
+  sudo_user: root
+  postgresql_user: name={{ user }}
+                   role_attr_flags=CREATEDB,CREATEROLE,SUPERUSER
+
+- name: Enable hstore module
+  sudo_user: vagrant
+  command: psql -d {{ pg_db_name }} -f /usr/pgsql-9.3/share/extension/hstore--1.2.sql
+  notify:
+    - restart postgresql

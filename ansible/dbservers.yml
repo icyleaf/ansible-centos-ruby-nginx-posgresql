@@ -1,0 +1,8 @@
+---
+
+- name: deploy Database and configure it
+  hosts: dbservers
+  user: vagrant  
+  sudo: yes
+  roles:
+    - postgresql

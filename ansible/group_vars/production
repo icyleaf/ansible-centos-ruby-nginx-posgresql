@@ -1,0 +1,3 @@
+user: icyleaf
+home: "/home/{{ user }}"
+pg_db_name: "{{ user }}"

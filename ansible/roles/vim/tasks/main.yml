@@ -1,0 +1,26 @@
+---
+# This playbook will install vundle and custom for vim
+- name: Install vim
+  yum: name=vim state=present
+
+- name: create .vim config directory
+  sudo: no
+  file: path=/home/{{user}}/.vim/bundle
+        state=directory
+  # file: path=/home/{{user}}/.vim
+  #       state=directory
+
+- name: git clone vundle
+  sudo: no
+  git: repo=https://github.com/gmarik/vundle.git
+       dest=/home/{{user}}/.vim/bundle/vundle
+       update=yes
+
+- name: Copy default vimrc file to $HOME/.vimrc
+  sudo: no
+  copy: src=vimrc dest=/home/{{user}}/.vimrc
+        backup=yes
+
+- name: Install vim plugins using vundle
+  sudo: no
+  command: vim +BundleInstall +BundleClean +qall

@@ -1,0 +1,3 @@
+user: vagrant
+home: "/home/{{ user }}"
+pg_db_name: "{{ user }}"

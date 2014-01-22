@@ -1,0 +1,51 @@
+---
+# Ruby
+- name: Install ruby dependencies
+  yum: name={{ item }} 
+       state=installed
+  with_items:
+    - gcc-c++
+    - make
+    - patch
+    - readline
+    - bzip2
+    - autoconf 
+    - automake 
+    - libtool 
+    - bison 
+    - zlib
+    - readline-devel
+    - openssl-devel
+    - libyaml-devel
+    - zlib-devel
+    - curl-devel
+    - gettext-devel
+    - libffi-devel
+
+- name: Download binary from ruby offical website
+  get_url: url=http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.0.tar.gz
+           dest=/usr/local/src
+
+- name: Uncompress...
+  command: tar -xf ruby-2.1.0.tar.gz 
+           chdir=/usr/local/src
+
+- name: Configure...
+  command: ./configure 
+           chdir=/usr/local/src/ruby-2.1.0
+
+- name: Compiling...
+  command: make 
+           chdir=/usr/local/src/ruby-2.1.0
+
+- name: Installing...
+  command: make install 
+           chdir=/usr/local/src/ruby-2.1.0
+
+- name: Make Ruby symlinks
+  file: path=/usr/bin/{{ item }}
+        src=/usr/local/bin/{{ item }}
+        state=link
+  with_items:
+    - gem
+    - ruby

@@ -1,0 +1,26 @@
+---
+# Cent OS options
+- name: Change to 163 source
+  copy: src=CentOS6-Base-163.repo
+        dest=/etc/yum.repos.d/CentOS-Base.repo
+        owner=root
+        group=root
+
+- name: Cache yum repo list
+  command: yum makecache
+
+- name: Install EPEL repo
+  yum: name=http://mirrors.hustunique.com/epel/6/x86_64/epel-release-6-8.noarch.rpm 
+       state=present
+
+- name: Update repo
+  yum: name=* 
+       state=latest
+
+- name: Change default timezone
+  file: dest=/etc/localtime
+        src=/usr/share/zoneinfo/Asia/Shanghai
+        state=link
+        force=yes
+        owner=root
+        group=root
