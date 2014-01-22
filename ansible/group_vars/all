@@ -6,14 +6,14 @@ postgresql:
 ruby:
   version: 2.1
   dir: ruby-2.1.0
-  file: "{{ ruby_dir }}.tar.gz"
-  url: "http://cache.ruby-lang.org/pub/ruby/{{ ruby_version }}/{{ ruby_file }}"
+  file: "{{ ruby.dir }}.tar.gz"
+  url: "http://cache.ruby-lang.org/pub/ruby/{{ ruby.version }}/{{ ruby.file }}"
   src_path: /usr/local/src/
 
 nginx:
   app_name: demo
-  app_root: "/var/www/{{ app_name }}/public"
-  app_socket: "{{ nginx_app_root}}/tmp/socket/production.socket"
+  app_root: "/var/www/{{ nginx.app_name }}/public"
+  app_socket: "{{ nginx.app_root}}/tmp/socket/production.socket"
   log_path: /var/log/nginx
-  server_name: "{{ nginx_app_name }}.dev"
+  server_name: "{{ nginx.app_name }}.dev"
   server_port: 80
