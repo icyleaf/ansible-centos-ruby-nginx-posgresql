@@ -21,6 +21,7 @@
     - curl-devel
     - gettext-devel
     - libffi-devel
+    - nodejs
 
 - name: Download binary from ruby offical website
   get_url: url={{ ruby.url }}
@@ -42,6 +43,9 @@
   command: make install 
            chdir="{{ ruby.src_path }}{{ ruby.dir }}"
 
+- name: Install bundler
+  command: gem install bundler
+
 - name: Make Ruby symlinks
   file: path=/usr/bin/{{ item }}
         src=/usr/local/bin/{{ item }}
@@ -49,6 +53,8 @@
   with_items:
     - gem
     - ruby
+    - bundle
+    - node
 
 - name: Copy .gemrc to $HOME
   copy: src=gemrc

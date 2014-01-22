@@ -1,9 +1,9 @@
 ---
-# - name: apply common configuration to all nodes
-#   hosts: all
-#   user: "{{ user }}"
-#   roles:
-#     - centos
+- name: apply common configuration to all nodes
+  hosts: all
+  user: "{{ user }}"
+  roles:
+    - common
 
-# - include: webservers.yml
+- include: webservers.yml
 - include: dbservers.yml
