@@ -23,24 +23,24 @@
     - libffi-devel
 
 - name: Download binary from ruby offical website
-  get_url: url=http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.0.tar.gz
-           dest=/usr/local/src
+  get_url: url={{ ruby_url }}
+           dest={{ ruby_src_path }}
 
 - name: Uncompress...
-  command: tar -xf ruby-2.1.0.tar.gz 
-           chdir=/usr/local/src
+  command: tar -xf {{ ruby_file }}
+           chdir={{ ruby_src_path }}
 
 - name: Configure...
   command: ./configure 
-           chdir=/usr/local/src/ruby-2.1.0
+           chdir="{{ ruby_src_path }}{{ ruby_dir }}"
 
 - name: Compiling...
   command: make 
-           chdir=/usr/local/src/ruby-2.1.0
+           chdir="{{ ruby_src_path }}{{ ruby_dir }}"
 
 - name: Installing...
   command: make install 
-           chdir=/usr/local/src/ruby-2.1.0
+           chdir="{{ ruby_src_path }}{{ ruby_dir }}"
 
 - name: Make Ruby symlinks
   file: path=/usr/bin/{{ item }}
@@ -49,3 +49,8 @@
   with_items:
     - gem
     - ruby
+
+- name: Copy .gemrc to $HOME
+  copy: src=gemrc
+        dest={{ home }}/.gemrc
+        backup=no
