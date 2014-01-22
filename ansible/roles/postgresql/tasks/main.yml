@@ -39,30 +39,24 @@
   notify:
     - restart postgresql
 
-# - name: Empty postgres user password
-#   sudo_user: root
-#   command: echo "" | password --stdin postgres
-
 - name: Create a db
-  # sudo_user: postgres
   sudo_user: root
-  postgresql_db: db={{ pg_db_name }}
+  postgresql_db: db={{ postgresql.database }}
 
 - name: Create postgresql user
   sudo_user: root
-  postgresql_user: name={{ user }}
-                   password={{ user }}
-                   db={{ pg_db_name }}
+  postgresql_user: name={{ postgresql.username }}
+                   password={{ postgresql.password }}
+                   db={{ postgresql.database }}
                    priv=ALL
 
 - name: Update user roles
-  # sudo_user: postgres
   sudo_user: root
-  postgresql_user: name={{ user }}
+  postgresql_user: name={{ postgresql.username }}
                    role_attr_flags=CREATEDB,CREATEROLE,SUPERUSER
 
 - name: Enable hstore module
   sudo_user: vagrant
-  command: psql -d {{ pg_db_name }} -f /usr/pgsql-9.3/share/extension/hstore--1.2.sql
+  command: psql -d {{ postgresql.database }} -f /usr/pgsql-9.3/share/extension/hstore--1.2.sql
   notify:
     - restart postgresql

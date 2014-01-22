@@ -2,10 +2,9 @@
 
 - name: configure and deploy the webservers and application code
   hosts: webservers
-  user: vagrant  
+  user: "{{ user }}"  
   sudo: yes
   roles:
-    - centos
     - nginx
     - ruby
     - zsh

@@ -1,7 +1,7 @@
 ---
 # Ruby
 - name: Install ruby dependencies
-  yum: name={{ item }} 
+  yum: name={{ item }}
        state=installed
   with_items:
     - gcc-c++
@@ -23,24 +23,24 @@
     - libffi-devel
 
 - name: Download binary from ruby offical website
-  get_url: url={{ ruby_url }}
-           dest={{ ruby_src_path }}
+  get_url: url={{ ruby.url }}
+           dest={{ ruby.src_path }}
 
 - name: Uncompress...
-  command: tar -xf {{ ruby_file }}
-           chdir={{ ruby_src_path }}
+  command: tar -xf {{ ruby.file }}
+           chdir={{ ruby.src_path }}
 
 - name: Configure...
   command: ./configure 
-           chdir="{{ ruby_src_path }}{{ ruby_dir }}"
+           chdir="{{ ruby.src_path }}{{ ruby.dir }}"
 
 - name: Compiling...
   command: make 
-           chdir="{{ ruby_src_path }}{{ ruby_dir }}"
+           chdir="{{ ruby.src_path }}{{ ruby.dir }}"
 
 - name: Installing...
   command: make install 
-           chdir="{{ ruby_src_path }}{{ ruby_dir }}"
+           chdir="{{ ruby.src_path }}{{ ruby.dir }}"
 
 - name: Make Ruby symlinks
   file: path=/usr/bin/{{ item }}

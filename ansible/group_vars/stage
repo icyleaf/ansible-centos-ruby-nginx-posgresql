@@ -1,6 +1,3 @@
 # CentOS
 user: vagrant
 home: "/home/{{ user }}"
-
-# Postgresql
-pg_db_name: "{{ user }}"

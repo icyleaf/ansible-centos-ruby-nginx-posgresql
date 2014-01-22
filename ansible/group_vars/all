@@ -1,14 +1,19 @@
-# Ruby
-ruby_version: 2.1
-ruby_dir: ruby-2.1.0
-ruby_file: "{{ ruby_dir }}.tar.gz"
-ruby_url: "http://cache.ruby-lang.org/pub/ruby/{{ ruby_version }}/{{ ruby_file }}"
-ruby_src_path: /usr/local/src/
+postgresql:
+  database: "{{ user }}"
+  username: "{{ user }}"
+  password: "{{ user }}"
 
-# Nginx
-nginx_app_name: demo
-nginx_app_root: "/var/www/{{ demo }}/public"
-nginx_app_socket: "{{ nginx_app_root}}/tmp/socket/production.socket"
-nginx_log_path: /var/log/nginx
-nginx_server_name: "{{ nginx_app_name }}.dev"
-nginx_server_port: 80
+ruby:
+  version: 2.1
+  dir: ruby-2.1.0
+  file: "{{ ruby_dir }}.tar.gz"
+  url: "http://cache.ruby-lang.org/pub/ruby/{{ ruby_version }}/{{ ruby_file }}"
+  src_path: /usr/local/src/
+
+nginx:
+  app_name: demo
+  app_root: "/var/www/{{ app_name }}/public"
+  app_socket: "{{ nginx_app_root}}/tmp/socket/production.socket"
+  log_path: /var/log/nginx
+  server_name: "{{ nginx_app_name }}.dev"
+  server_port: 80
