@@ -4,16 +4,17 @@ postgresql:
   password: "{{ user }}"
 
 ruby:
-  version: 2.1
+  version: 2.1.0p0
+  url: http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.0.tar.gz
+  sha256sum: 3538ec1f6af96ed9deb04e0965274528162726cc9ba3625dcf23648df872d09d
   dir: ruby-2.1.0
-  file: "{{ ruby.dir }}.tar.gz"
-  url: "http://cache.ruby-lang.org/pub/ruby/{{ ruby.version }}/{{ ruby.file }}"
+  file: ruby-2.1.0.tar.gz
   src_path: /usr/local/src/
 
 nginx:
   app_name: demo
   app_root: "/var/www/{{ nginx.app_name }}/public"
-  app_socket: "{{ nginx.app_root}}/tmp/socket/production.socket"
+  app_socket: "{{ nginx.app_root }}/tmp/socket/production.socket"
   log_path: /var/log/nginx
   server_name: "{{ nginx.app_name }}.dev"
   server_port: 80

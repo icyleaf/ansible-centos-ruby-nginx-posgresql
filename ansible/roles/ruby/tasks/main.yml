@@ -1,5 +1,10 @@
 ---
 # Ruby
+- name: get currently installed ruby version
+  command: ruby -v
+  register: result
+  ignore_errors: True
+
 - name: Install ruby dependencies
   yum: name={{ item }}
        state=installed
@@ -22,26 +27,27 @@
     - gettext-devel
     - libffi-devel
     - nodejs
+when: result.rc !=0 or result.stdout.split()[1] != ruby.version
 
 - name: Download binary from ruby offical website
   get_url: url={{ ruby.url }}
            dest={{ ruby.src_path }}
+           sha256sum={{ ruby.sha256sum }}
+  when: result.rc !=0 or result.stdout.split()[1] != ruby.version
 
 - name: Uncompress...
   command: tar -xf {{ ruby.file }}
            chdir={{ ruby.src_path }}
+  when: result.rc !=0 or result.stdout.split()[1] != ruby.version
 
-- name: Configure...
-  command: ./configure 
+- name: Install...
+  command: name={{ item }}
            chdir="{{ ruby.src_path }}{{ ruby.dir }}"
-
-- name: Compiling...
-  command: make 
-           chdir="{{ ruby.src_path }}{{ ruby.dir }}"
-
-- name: Installing...
-  command: make install 
-           chdir="{{ ruby.src_path }}{{ ruby.dir }}"
+  with_items:
+    - ./configure
+    - make
+    - make install
+  when: result.rc !=0 or result.stdout.split()[1] != ruby.version
 
 - name: Install bundler
   command: gem install bundler
@@ -54,7 +60,6 @@
     - gem
     - ruby
     - bundle
-    - node
 
 - name: Copy .gemrc to $HOME
   copy: src=gemrc

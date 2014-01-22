@@ -75,6 +75,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ansible.playbook = 'ansible/site.yml'
     ansible.sudo = true
 
-    ansible.verbose = 'v'
+    ansible.verbose = 'vvvv'
   end
 end
