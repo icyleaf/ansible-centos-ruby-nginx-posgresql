@@ -59,6 +59,7 @@ when: result.rc !=0 or result.stdout.split()[1] != ruby.version
   with_items:
     - gem
     - ruby
+    - rake
     - bundle
 
 - name: Copy .gemrc to $HOME
